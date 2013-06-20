@@ -1,3 +1,6 @@
 [submodule "riak"]
 	path = riak
 	url = git://github.com/basho/riak-chef-cookbook.git
+[submodule "erlang"]
+	path = erlang
+	url = git://github.com/opscode-cookbooks/erlang.git
