@@ -1,0 +1,4 @@
+opsworks-riak
+=============
+
+Riak cookbook
