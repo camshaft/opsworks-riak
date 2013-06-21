@@ -19,3 +19,6 @@
 [submodule "cron"]
 	path = cron
 	url = git://github.com/opscode-cookbooks/cron.git
+[submodule "route53"]
+	path = route53
+	url = git://github.com/hw-cookbooks/route53.git
