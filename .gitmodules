@@ -25,3 +25,6 @@
 [submodule "ulimit"]
 	path = ulimit
 	url = git://github.com/bmhatfield/chef-ulimit
+[submodule "dmg"]
+	path = dmg
+	url = https://github.com/opscode-cookbooks/dmg.git
