@@ -31,3 +31,9 @@
 [submodule "windows"]
 	path = windows
 	url = https://github.com/opscode-cookbooks/windows.git
+[submodule "runit"]
+	path = runit
+	url = https://github.com/opscode-cookbooks/runit.git
+[submodule "chef_handler"]
+	path = chef_handler
+	url = https://github.com/opscode-cookbooks/chef_handler.git
