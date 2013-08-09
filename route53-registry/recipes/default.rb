@@ -5,4 +5,4 @@ value = node[:opsworks][:instance][:private_ip]
 type = "A"
 zone_id = node[:route53_registry][:zone_id]
 
-client.create_or_append_record(name, value, type, zone_id)
+client.create_or_append_record(name, value, type, 60, zone_id)
