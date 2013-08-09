@@ -4,6 +4,7 @@ require 'net/http'
 require 'net/https'
 require 'openssl'
 require 'uri'
+require 'resolv'
  
 module Route53
   
@@ -18,32 +19,42 @@ module Route53
     end
  
     # Creates a recordset
-    def create_record(name, value, type, zone_id)
-      do_post("CREATE", name, value, type, zone_id)
+    def create_record(name, value, type, ttl, zone_id)
+      do_post("CREATE", name, value, type, ttl, zone_id)
     end
  
     # Deletes a recordset
-    def delete_record(name, value, type, zone_id)
-      do_post("DELETE", name, value, type, zone_id)
+    def delete_record(name, value, type, ttl, zone_id)
+      do_post("DELETE", name, value, type, ttl, zone_id)
     end
  
-    def create_or_update_record(name, value, type, zone_id)
+    def create_or_update_record(name, value, type, ttl, zone_id)
       begin
-        create_record(name, value, type, zone_id)
+        create_record(name, value, type, ttl, zone_id)
       rescue
-        delete_record(name, value, type, zone_id)
-        create_record(name, value, type, zone_id)
+        delete_record(name, value, type, ttl, zone_id)
+        create_record(name, value, type, ttl, zone_id)
       end
     end
 
-    def create_or_append_record(name, value, type, zone_id)
-      # TODO get the values first
-      create_record(name, value, type, zone_id)
+    def create_or_append_record(name, value, type, ttl, zone_id)
+      # TODO it would probably better to call the route53 api instead
+      ips = (Resolv.getaddresses name).sort()
+      return if ips.include? value
+
+      added_ips = ips | [value]
+
+      begin
+        create_record(name, added_ips, type, ttl, zone_id)
+      rescue
+        delete_record(name, ips, type, ttl, zone_id)
+        create_record(name, added_ips, type, ttl, zone_id)
+      end
     end
     
     private
- 
-    def do_post(operation, name, value, type, zone_id)
+
+    def do_post(operation, name, value, type, ttl, zone_id)
       request({
         :method => "POST",
         :path => "hostedzone/#{zone_id}/rrset",
@@ -58,7 +69,7 @@ module Route53
             <ResourceRecordSet>
                <Name>#{name}</Name>
                <Type>#{type}</Type>
-               <TTL>3600</TTL>
+               <TTL>#{ttl}</TTL>
                <ResourceRecords>
                #{to_resource_value(value)}
                </ResourceRecords>
