@@ -18,7 +18,7 @@
 	url = git://github.com/opscode-cookbooks/cron.git
 [submodule "route53"]
 	path = route53
-	url = git://github.com/hw-cookbooks/route53.git
+	url = git://github.com/bakins/chef-route53.git
 [submodule "apt"]
 	path = apt
 	url = git://github.com/opscode-cookbooks/apt.git
